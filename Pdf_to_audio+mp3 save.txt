@@ -1,0 +1,38 @@
+import pyttsx3
+import PyPDF2
+from gtts import gTTS
+
+pdfFileObj = open("pdftest.pdf", "rb")
+pdfReader = PyPDF2.PdfFileReader(pdfFileObj)
+player = pyttsx3.init()
+
+mytext = ""
+
+#player.setProperty("rate", 200)
+
+voices = player.getProperty("voices")
+
+player.setProperty("rate",200)
+player.setProperty("volume",0.1)
+
+#male voice of index 0 and female voice of index 1
+print("Male voice : {0}" .format(voices[0].id))
+print("Female voice : {0}" .format(voices[1].id))
+
+#setting up voice
+player.setProperty("voice",voices [1].id)
+
+
+for pageNum in range(0, pdfReader.numPages):
+    pageObj = pdfReader.getPage(pageNum) 
+  
+    mytext += pageObj.extractText()
+    player = pyttsx3.init()
+    print(mytext)
+    player.say(mytext)
+    player.runAndWait()
+   # player.close()
+    player.stop()
+
+tts = gTTS(text=mytext, lang='en')
+tts.save("book4.mp3")
